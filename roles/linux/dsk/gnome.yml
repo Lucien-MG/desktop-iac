@@ -1,0 +1,39 @@
+---
+
+- name: Install Gnome
+  hosts: all
+
+  # Gather machine informations
+  gather_facts: yes
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    # Micro Code
+    - name: Install Power Profiles
+      package:
+        name:
+          - power-profiles-daemon
+
+- name: Systemctl Gnome
+  hosts: all
+
+  # Gather machine informations
+  gather_facts: yes
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    # Micro Code
+    - name: Enable Gnome Power Profiles
+      ansible.builtin.systemd:
+        name: power-profiles-daemon.service
+        state: started
+        enabled: yes
+        masked: no

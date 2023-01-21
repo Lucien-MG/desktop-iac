@@ -1,0 +1,25 @@
+---
+
+- name: Install Linux Firmware
+  hosts: all
+
+  # gather machine informations
+  gather_facts: yes
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    # Install linux Firmware
+    # It should already be installed
+    - name: Install Linux Firmware
+      package:
+        name:
+          - linux-firmware
+
+    - name: Install Linux Utils
+      package:
+        name:
+          - util-linux

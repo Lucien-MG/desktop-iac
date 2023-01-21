@@ -1,0 +1,26 @@
+---
+
+- name: Deploy Desktop Infrastructure
+  hosts: all
+
+  tasks:
+
+  - name: System Facts
+    debug:
+      msg:
+        - System Architecture{{':'}} {{ ansible_architecture }}
+        - Operating System{{':'}} {{ ansible_system }}
+        - User{{':'}} {{ ansible_user_id }}
+        - User's home{{':'}} {{ ansible_env.HOME }}
+        - Date{{':'}} {{ ansible_date_time.date }}
+  
+- import_playbook: roles/linux/playbook.yml
+  when: ansible_system == "Linux"
+
+- import_playbook: roles/macos/playbook.yml
+  when: ansible_system == "Macos"
+
+- import_playbook: roles/windows/playbook.yml
+  when: ansible_system == "Windows"
+
+- import_playbook: roles/common/playbook.yml

@@ -1,0 +1,26 @@
+---
+
+- name: Install CPU Drivers
+  hosts: all
+
+  # Gather machine informations
+  gather_facts: yes
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    # Micro Code
+    - name: Install AMD CPU Microcode
+      package:
+        name:
+          - amd-ucode
+      when: ansible_processor[1] == "AuthenticAMD"
+    
+    - name: Install INTEL CPU Microcode
+      package:
+        name:
+          - intel-ucode
+      when: ansible_processor[1] == "GenuineIntel"

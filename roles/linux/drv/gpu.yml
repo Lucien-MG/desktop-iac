@@ -1,0 +1,39 @@
+---
+
+- name: Install GPU Drivers
+  hosts: all
+
+  # gather machine informations
+  gather_facts: yes
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+    
+    # GPU and Hardware Acceleration
+    - name: Install Video Hardware Acceleration VDPAU
+      package:
+        name:
+          - libvdpau-va-gl
+          - mesa-vdpau
+    
+    # Hardware Acceleration
+    - name: Install Video Hardware Acceleration VA-API
+      package:
+        name:
+          - libva-mesa-driver
+          - libva-utils
+    
+    - name: Install Vulkan Loader
+      package:
+        name:
+          - vulkan-icd-loader
+
+    # Vulkan installation
+    - name: Install AMDGPU Vulkan
+      package:
+        name:
+          - vulkan-radeon
+      when: ansible_processor[1] == "AuthenticAMD"

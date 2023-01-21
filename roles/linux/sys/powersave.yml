@@ -1,0 +1,79 @@
+---
+
+- name: Install Powersaver Tools
+  hosts: localhost
+  connection: local
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+    
+    - name: Install Power Profile
+      package:
+        name:
+          - power-profiles-daemon
+    
+    - name: Install Powertop
+      package:
+        name:
+          - powertop
+
+- name: Config Powersaver Tools
+  hosts: localhost
+  connection: local
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+    
+    - name: Audio Powersave
+      ansible.builtin.template:
+        src: audio_powersave.j2
+        dest: /etc/modprobe.d/audio_powersave.conf
+    
+    - name: Wifi Powersave
+      ansible.builtin.template:
+        src: iwlwifi.j2
+        dest: /etc/modprobe.d/iwlwifi.conf
+    
+    - name: Powertop Systemd Service
+      ansible.builtin.template:
+        src: powertop.j2
+        dest: /etc/systemd/system/powertop.service
+
+- name: Enable Powersaver Tools
+  hosts: localhost
+  connection: local
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+    
+    - name: Enable Power Profile
+      ansible.builtin.systemd:
+        name: power-profiles-daemon.service
+        state: started
+        enabled: yes
+        masked: no
+    
+    - name: Enable Powertop
+      ansible.builtin.systemd:
+        name: powertop.service
+        state: started
+        enabled: yes
+        masked: no

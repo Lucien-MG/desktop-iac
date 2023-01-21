@@ -1,0 +1,40 @@
+---
+
+- name: Bash Install
+  hosts: all
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    - name: install bash
+      package:
+        name:
+          - bash
+
+- name: Bash Config
+  hosts: all
+
+  # gather machine informations
+  gather_facts: yes
+
+  # Enable user previlegies
+  become: no
+
+  # Run suitable scripts
+  tasks:
+
+    - name: Copy Bashrc
+      copy:
+        src: bashrc.j2
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+    
+    - name: Copy Bash Aliases
+      copy:
+        src: bash_aliases.j2
+        dest: "{{ ansible_env.HOME }}/.bash_aliases"

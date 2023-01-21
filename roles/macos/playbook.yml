@@ -1,0 +1,12 @@
+---
+
+- name: Deploy Macos Desktop Infrastructure
+  hosts: all
+
+  tasks:
+
+  - name: System
+    debug:
+      msg:
+        - System Architecture{{':'}} {{ ansible_architecture }}
+        - Operating System{{':'}} {{ ansible_system }}

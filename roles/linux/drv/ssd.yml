@@ -1,0 +1,47 @@
+---
+
+- name: Install TRIM Drivers
+  hosts: all
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    # Install linux utils
+    # It should already be installed
+    - name: Install Linux Utils
+      package:
+        name:
+          - util-linux
+
+- name: Enable SSD Drivers
+  hosts: localhost
+  connection: local
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+    
+    - name: Enable SSD Trim
+      ansible.builtin.systemd:
+        name: fstrim.service
+        state: started
+        enabled: yes
+        masked: no
+    
+    - name: Enable SSD Trim Timer
+      ansible.builtin.systemd:
+        name: fstrim.timer
+        state: started
+        enabled: yes
+        masked: no

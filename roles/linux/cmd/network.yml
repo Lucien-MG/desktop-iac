@@ -1,0 +1,20 @@
+---
+
+- name: Network Tools Install
+  hosts: all
+
+  # gather machine informations
+  gather_facts: no
+
+  # Enable root previlegies
+  become: yes
+
+  # Run suitable scripts
+  tasks:
+
+    - name: Install Network Tools
+      package:
+        name:
+          - iputils
+          - traceroute
+          - nmap
